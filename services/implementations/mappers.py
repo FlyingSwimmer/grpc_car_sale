@@ -14,3 +14,14 @@ def advertisement_mapper(ad):
         min_price=ad.min_price,
         end_time=end_time,
     )
+
+def offer_mapper(offer):
+    creation_date = Timestamp()
+    creation_date.FromDatetime(offer.creation_date)
+    return car_sale_pb2.Offer(
+        id=offer.id,
+        user=offer.user_id,
+        advertisement=offer.advertisement_id,
+        price=offer.price,
+        creation_date=creation_date,
+    )

@@ -9,14 +9,27 @@ class CarSaleServicer(car_sale_pb2_grpc.CarSaleServicer):
 
     def GetAdsList(self, request, context):
         session = Session()
-        ads = session.query(Advertisement).all()
-        print(ads)
-        ads = [mappers.advertisement_mapper(ad) for ad in ads]
+        ads = [mappers.advertisement_mapper(ad) for ad in session.query(Advertisement).all()]
         return car_sale_pb2.AdsListResponse(data=ads)
 
     def AddOffer(self, request, context):
-        print(request.uc)
-        return car_sale_pb2.AddOfferResponse()
+        session = Session()
+        uc = request.uc
+        user = get_user(session, uc.username, uc.password)
+        if user is None:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details("authentication error.")
+            return car_sale_pb2.AddOfferResponse()
+
+        offer = Offer(
+            user_id = user.id,
+            advertisement_id=request.advertisement,
+            price=request.price
+        )
+        session.add(offer)
+        session.commit()
+        print("filaaan: ", offer)
+        return car_sale_pb2.AddOfferResponse(data=mappers.offer_mapper(offer))
 
 
     def AddAdvertisement(self, request, context):
