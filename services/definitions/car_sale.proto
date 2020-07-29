@@ -1,0 +1,65 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+service CarSale {
+    rpc GetAdsList(AdsListRequest) returns (AdsListResponse) {};
+    rpc AddOffer(AddOfferRequest) returns (AddOfferResponse) {}
+    rpc AddAdvertisement(AddAdvertisementRequest) returns (AddAdvertisementResponse) {}
+}
+
+
+message Advertisement {
+    int32 id = 1;
+    int32 owner = 2;
+    string title = 3;
+    string description = 4;
+    string car_name = 5;
+    string car_model = 6;
+    int64 min_price = 7;
+    google.protobuf.Timestamp end_time = 8;
+}
+
+message Offer {
+    int32 id = 1;
+    int32 user = 2;
+    int32 advertisement = 3;
+    int64 price = 4;
+    google.protobuf.Timestamp creation_date = 5;
+}
+
+message AdsListRequest {
+
+}
+
+message AdsListResponse {
+    repeated Advertisement data = 1;
+}
+
+message AddOfferRequest {
+    UserCredential uc = 1;
+    int32 advertisement = 2;
+    int64 price = 3;
+}
+
+message AddOfferResponse {
+    Offer data = 1;
+}
+
+message AddAdvertisementRequest {
+    UserCredential uc = 1;
+    string title = 2;
+    string description = 3;
+    string car_name = 4;
+    string car_model = 5;
+    int64 min_price = 6;
+    google.protobuf.Timestamp end_time = 7;
+}
+
+message AddAdvertisementResponse {
+    Advertisement data = 1;
+}
+
+message UserCredential {
+    string username = 1;
+    string password = 2;
+}

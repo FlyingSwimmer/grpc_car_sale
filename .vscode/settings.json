@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/home/rahnat/.virtualenvs/grpc/bin/python",
+    "python.autoComplete.extraPaths": ["/home/rahnat/Documents/divarGuideline/grpc_car_sale"],
+}
